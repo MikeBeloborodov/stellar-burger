@@ -1,5 +1,5 @@
 export type TConstructorItems = {
-  bun: TIngredient | { price: number };
+  bun: Partial<TIngredient>;
   ingredients: TIngredient[];
 };
 
