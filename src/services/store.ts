@@ -1,4 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
+import stellarBurgerSlice from '../slices/stellarBurgerSlice';
 
 import {
   TypedUseSelectorHook,
@@ -6,14 +7,14 @@ import {
   useSelector as selectorHook
 } from 'react-redux';
 
-const rootReducer = () => {}; // Заменить на импорт настоящего редьюсера
-
 const store = configureStore({
-  reducer: rootReducer,
+  reducer: {
+    stellarBurger: stellarBurgerSlice
+  },
   devTools: process.env.NODE_ENV !== 'production'
 });
 
-export type RootState = ReturnType<typeof rootReducer>;
+export type RootState = ReturnType<typeof stellarBurgerSlice>;
 
 export type AppDispatch = typeof store.dispatch;
 
