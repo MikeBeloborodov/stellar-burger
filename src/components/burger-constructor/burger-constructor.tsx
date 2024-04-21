@@ -19,10 +19,13 @@ export const BurgerConstructor: FC = () => {
 
   const onOrderClick = () => {
     if (constructorItems.bun._id && constructorItems.ingredients.length) {
+      const ingredientsIds = constructorItems.ingredients.map(
+        (item) => item._id
+      );
       dispatch(
         fetchNewOrder([
-          constructorItems?.bun?._id,
-          ...constructorItems.ingredients.map((item) => item._id),
+          constructorItems.bun._id,
+          ...ingredientsIds,
           constructorItems.bun._id
         ])
       );

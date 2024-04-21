@@ -3,6 +3,7 @@ import {
   TRegisterData,
   getFeedsApi,
   getIngredientsApi,
+  getOrdersApi,
   getUserApi,
   loginUserApi,
   orderBurgerApi,
@@ -25,6 +26,7 @@ type TInitialState = {
   orders: TOrder[];
   totalOrders: number;
   ordersToday: number;
+  userOrders: TOrder[];
 };
 
 const initContructorItems = {
@@ -49,7 +51,8 @@ const initialState: TInitialState = {
   },
   orders: [],
   totalOrders: 0,
-  ordersToday: 0
+  ordersToday: 0,
+  userOrders: []
 };
 
 const stellarBurgerSlice = createSlice({
@@ -70,6 +73,12 @@ const stellarBurgerSlice = createSlice({
     },
     init(state) {
       state.isInit = true;
+    },
+    removeOrders(state) {
+      state.orders.length = 0;
+    },
+    removeUserOrders(state) {
+      state.userOrders.length = 0;
     }
   },
   selectors: {
@@ -83,7 +92,8 @@ const stellarBurgerSlice = createSlice({
     selectUser: (state) => state.user,
     selectOrders: (state) => state.orders,
     selectTotalOrders: (state) => state.totalOrders,
-    selectTodayOrders: (state) => state.ordersToday
+    selectTodayOrders: (state) => state.ordersToday,
+    selectUserOrders: (state) => state.userOrders
   },
   extraReducers: (builder) => {
     builder
@@ -153,6 +163,16 @@ const stellarBurgerSlice = createSlice({
         state.orders = action.payload.orders;
         state.totalOrders = action.payload.total;
         state.ordersToday = action.payload.totalToday;
+      })
+      .addCase(fetchUserOrders.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(fetchUserOrders.rejected, (state) => {
+        state.loading = false;
+      })
+      .addCase(fetchUserOrders.fulfilled, (state, action) => {
+        state.loading = false;
+        state.userOrders = action.payload;
       });
   }
 });
@@ -185,6 +205,10 @@ export const fetchFeed = createAsyncThunk('user/feed', async () =>
   getFeedsApi()
 );
 
+export const fetchUserOrders = createAsyncThunk('user/orders', async () =>
+  getOrdersApi()
+);
+
 export const {
   selectLoading,
   selectIngredients,
@@ -196,8 +220,14 @@ export const {
   selectUser,
   selectOrders,
   selectTotalOrders,
-  selectTodayOrders
+  selectTodayOrders,
+  selectUserOrders
 } = stellarBurgerSlice.selectors;
-export const { addIngredient, init, closeOrderRequest } =
-  stellarBurgerSlice.actions;
+export const {
+  addIngredient,
+  init,
+  closeOrderRequest,
+  removeOrders,
+  removeUserOrders
+} = stellarBurgerSlice.actions;
 export default stellarBurgerSlice.reducer;

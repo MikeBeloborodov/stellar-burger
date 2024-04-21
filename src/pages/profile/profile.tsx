@@ -1,12 +1,10 @@
 import { ProfileUI } from '@ui-pages';
 import { FC, SyntheticEvent, useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { selectUser } from '../../slices/stellarBurgerSlice';
 
 export const Profile: FC = () => {
-  /** TODO: взять переменную из стора */
-  const user = {
-    name: '',
-    email: ''
-  };
+  const user = useSelector(selectUser);
 
   const [formValue, setFormValue] = useState({
     name: user.name,
@@ -29,6 +27,7 @@ export const Profile: FC = () => {
 
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
+    console.log(formValue);
   };
 
   const handleCancel = (e: SyntheticEvent) => {
@@ -46,8 +45,6 @@ export const Profile: FC = () => {
       [e.target.name]: e.target.value
     }));
   };
-
-  return null;
 
   return (
     <ProfileUI
