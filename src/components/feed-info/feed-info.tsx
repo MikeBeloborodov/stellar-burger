@@ -2,7 +2,8 @@ import { FC } from 'react';
 import { useSelector } from 'react-redux';
 import {
   selectOrders,
-  selectOrdersCount
+  selectTodayOrders,
+  selectTotalOrders
 } from '../../slices/stellarBurgerSlice';
 
 import { TOrder } from '@utils-types';
@@ -16,8 +17,8 @@ const getOrders = (orders: TOrder[], status: string): number[] =>
 
 export const FeedInfo: FC = () => {
   const orders: TOrder[] = useSelector(selectOrders);
-  const { total, totalToday } = useSelector(selectOrdersCount);
-  const feed = { total, totalToday };
+  const total = useSelector(selectTotalOrders);
+  const totalToday = useSelector(selectTodayOrders);
 
   const readyOrders = getOrders(orders, 'done');
 
@@ -27,7 +28,7 @@ export const FeedInfo: FC = () => {
     <FeedInfoUI
       readyOrders={readyOrders}
       pendingOrders={pendingOrders}
-      feed={feed}
+      feed={{ total, totalToday }}
     />
   );
 };

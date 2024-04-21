@@ -16,7 +16,12 @@ import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../services/store';
 import { getCookie } from '../../utils/cookie';
-import { fetchFeed, getUserThunk, init } from '../../slices/stellarBurgerSlice';
+import {
+  fetchFeed,
+  fetchIngredients,
+  getUserThunk,
+  init
+} from '../../slices/stellarBurgerSlice';
 
 import {
   AppHeader,
@@ -31,6 +36,7 @@ export const App = () => {
   useEffect(() => {
     const token = getCookie('accessToken');
     dispatch(fetchFeed());
+    dispatch(fetchIngredients());
     if (token) {
       dispatch(getUserThunk());
     } else {

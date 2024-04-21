@@ -2,17 +2,24 @@ import { Preloader } from '@ui';
 import { FeedUI } from '@ui-pages';
 import { TOrder } from '@utils-types';
 import { FC } from 'react';
-import { useSelector } from 'react-redux';
-import { selectOrders } from '../../slices/stellarBurgerSlice';
+import { useSelector, useDispatch } from 'react-redux';
+import { selectOrders, fetchFeed } from '../../slices/stellarBurgerSlice';
+import { AppDispatch } from '../../services/store';
 
 export const Feed: FC = () => {
   const orders: TOrder[] = useSelector(selectOrders);
+  const dispatch: AppDispatch = useDispatch();
 
   if (!orders.length) {
     return <Preloader />;
   }
 
-  <h1>UI</h1>;
-
-  return <FeedUI orders={orders} handleGetFeeds={() => {}} />;
+  return (
+    <FeedUI
+      orders={orders}
+      handleGetFeeds={() => {
+        dispatch(fetchFeed());
+      }}
+    />
+  );
 };

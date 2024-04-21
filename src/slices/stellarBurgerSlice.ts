@@ -82,10 +82,8 @@ const stellarBurgerSlice = createSlice({
     selectIsAuthChecked: (state) => state.isAuthChecked,
     selectUser: (state) => state.user,
     selectOrders: (state) => state.orders,
-    selectOrdersCount: (state) => ({
-      total: state.totalOrders,
-      totalToday: state.ordersToday
-    })
+    selectTotalOrders: (state) => state.totalOrders,
+    selectTodayOrders: (state) => state.ordersToday
   },
   extraReducers: (builder) => {
     builder
@@ -101,24 +99,20 @@ const stellarBurgerSlice = createSlice({
       })
       .addCase(fetchNewOrder.rejected, (state, action) => {
         state.orderRequest = false;
-        console.log(action);
       })
       .addCase(fetchNewOrder.fulfilled, (state, action) => {
         state.orderModalData = action.payload.order;
         state.orderRequest = false;
-        console.log(action);
       })
       .addCase(fetchLoginUser.pending, (state) => {
         state.loading = true;
       })
       .addCase(fetchLoginUser.rejected, (state, action) => {
         state.loading = false;
-        console.log(action);
       })
       .addCase(fetchLoginUser.fulfilled, (state, action) => {
         state.isAuthChecked = true;
         state.loading = false;
-        console.log(action.payload);
         setCookie('accessToken', action.payload.accessToken);
         localStorage.setItem('refreshToken', action.payload.refreshToken);
       })
@@ -130,11 +124,9 @@ const stellarBurgerSlice = createSlice({
         if (action.error.message) {
           state.errorText = action.error.message;
         }
-        console.log(action);
       })
       .addCase(fetchRegisterUser.fulfilled, (state, action) => {
         state.loading = false;
-        console.log(action.payload);
       })
       .addCase(getUserThunk.pending, (state) => {
         state.loading = true;
@@ -142,12 +134,10 @@ const stellarBurgerSlice = createSlice({
       .addCase(getUserThunk.rejected, (state, action) => {
         state.loading = false;
         state.isInit = true;
-        console.log(action);
       })
       .addCase(getUserThunk.fulfilled, (state, action) => {
         state.loading = false;
         state.isInit = true;
-        console.log(action.payload);
         state.user.name = action.payload.user.name;
         state.user.email = action.payload.user.email;
         state.isAuthChecked = true;
@@ -156,14 +146,13 @@ const stellarBurgerSlice = createSlice({
         state.loading = true;
       })
       .addCase(fetchFeed.rejected, (state, action) => {
-        console.log(action);
+        state.loading = false;
       })
       .addCase(fetchFeed.fulfilled, (state, action) => {
         state.loading = false;
         state.orders = action.payload.orders;
         state.totalOrders = action.payload.total;
         state.ordersToday = action.payload.totalToday;
-        console.log(action.payload);
       });
   }
 });
@@ -206,7 +195,8 @@ export const {
   selectIsAuthChecked,
   selectUser,
   selectOrders,
-  selectOrdersCount
+  selectTotalOrders,
+  selectTodayOrders
 } = stellarBurgerSlice.selectors;
 export const { addIngredient, init, closeOrderRequest } =
   stellarBurgerSlice.actions;
