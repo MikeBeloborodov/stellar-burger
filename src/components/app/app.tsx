@@ -73,43 +73,51 @@ export const App = () => {
           </div>
         }
       />
-      <Route // TODO: protect
+      <Route
         path='/login'
         element={
-          <div className={styles.app}>
-            <AppHeader />
-            <Login />
-          </div>
+          <ProtectedRoute unAuthOnly={true}>
+            <div className={styles.app}>
+              <AppHeader />
+              <Login />
+            </div>
+          </ProtectedRoute>
         }
       />
-      <Route // TODO: protect
+      <Route
         path='/register'
         element={
-          <div className={styles.app}>
-            <AppHeader />
-            <Register />
-          </div>
+          <ProtectedRoute unAuthOnly={true}>
+            <div className={styles.app}>
+              <AppHeader />
+              <Register />
+            </div>
+          </ProtectedRoute>
         }
       />
-      <Route // TODO: protect
+      <Route
         path='/forgot-password'
         element={
-          <div className={styles.app}>
-            <AppHeader />
-            <ForgotPassword />
-          </div>
+          <ProtectedRoute>
+            <div className={styles.app}>
+              <AppHeader />
+              <ForgotPassword />
+            </div>
+          </ProtectedRoute>
         }
       />
-      <Route // TODO: protect
+      <Route
         path='/reset-password'
         element={
-          <div className={styles.app}>
-            <AppHeader />
-            <ResetPassword />
-          </div>
+          <ProtectedRoute>
+            <div className={styles.app}>
+              <AppHeader />
+              <ResetPassword />
+            </div>
+          </ProtectedRoute>
         }
       />
-      <Route // TODO: protect
+      <Route
         path='/profile'
         element={
           <ProtectedRoute>
@@ -120,16 +128,18 @@ export const App = () => {
           </ProtectedRoute>
         }
       />
-      <Route // TODO: protect
+      <Route
         path='/profile/orders'
         element={
-          <div className={styles.app}>
-            <AppHeader />
-            <ProfileOrders />
-          </div>
+          <ProtectedRoute>
+            <div className={styles.app}>
+              <AppHeader />
+              <ProfileOrders />
+            </div>
+          </ProtectedRoute>
         }
       />
-      <Route // TODO: modal
+      <Route // TODO MODAL
         path='/feed/:number'
         element={
           <div className={styles.app}>
@@ -147,13 +157,15 @@ export const App = () => {
           </div>
         }
       />
-      <Route // TODO: modal, protect
+      <Route // TODO: modal
         path='/profile/orders/:number'
         element={
-          <div className={styles.app}>
-            <AppHeader />
-            <OrderInfo />
-          </div>
+          <ProtectedRoute>
+            <div className={styles.app}>
+              <AppHeader />
+              <OrderInfo />
+            </div>
+          </ProtectedRoute>
         }
       />
     </Routes>

@@ -6,12 +6,13 @@ import {
   getOrdersApi,
   getUserApi,
   loginUserApi,
+  logoutApi,
   orderBurgerApi,
   registerUserApi
 } from '@api';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { TConstructorItems, TIngredient, TOrder, TUser } from '@utils-types';
-import { setCookie } from '../utils/cookie';
+import { deleteCookie, setCookie } from '../utils/cookie';
 
 type TInitialState = {
   ingredients: TIngredient[];
@@ -36,6 +37,11 @@ const initContructorItems = {
   ingredients: []
 };
 
+const initUser: TUser = {
+  name: '',
+  email: ''
+};
+
 const initialState: TInitialState = {
   ingredients: [],
   loading: false,
@@ -45,10 +51,7 @@ const initialState: TInitialState = {
   errorText: '',
   isAuthChecked: false,
   isInit: false,
-  user: {
-    name: '',
-    email: ''
-  },
+  user: initUser,
   orders: [],
   totalOrders: 0,
   ordersToday: 0,
@@ -173,6 +176,20 @@ const stellarBurgerSlice = createSlice({
       .addCase(fetchUserOrders.fulfilled, (state, action) => {
         state.loading = false;
         state.userOrders = action.payload;
+      })
+      .addCase(fetchLogout.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(fetchLogout.rejected, (state) => {
+        state.loading = false;
+      })
+      .addCase(fetchLogout.fulfilled, (state, action) => {
+        state.loading = false;
+        if (action.payload.success) {
+          localStorage.removeItem('refreshToken');
+          deleteCookie('accessToken');
+          state.user = initUser;
+        }
       });
   }
 });
@@ -207,6 +224,10 @@ export const fetchFeed = createAsyncThunk('user/feed', async () =>
 
 export const fetchUserOrders = createAsyncThunk('user/orders', async () =>
   getOrdersApi()
+);
+
+export const fetchLogout = createAsyncThunk('user/logout', async () =>
+  logoutApi()
 );
 
 export const {
