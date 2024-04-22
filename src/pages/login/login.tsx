@@ -1,7 +1,7 @@
 import { FC, SyntheticEvent, useState } from 'react';
 import { LoginUI } from '@ui-pages';
 import { useDispatch } from 'react-redux';
-import { fetchLoginUser } from '../../slices/stellarBurgerSlice';
+import { fetchLoginUser, getUserThunk } from '../../slices/stellarBurgerSlice';
 import { AppDispatch } from '../../services/store';
 import { useSelector } from 'react-redux';
 import { selectErrorText } from '../../slices/stellarBurgerSlice';
@@ -15,7 +15,9 @@ export const Login: FC = () => {
 
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
-    dispatch(fetchLoginUser({ email, password }));
+    dispatch(fetchLoginUser({ email, password })).then(() =>
+      dispatch(getUserThunk())
+    );
   };
 
   return (

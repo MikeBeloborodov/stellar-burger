@@ -15,7 +15,6 @@ import { Routes, Route } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../services/store';
-import { getCookie } from '../../utils/cookie';
 import {
   fetchFeed,
   fetchIngredients,
@@ -29,145 +28,93 @@ import {
   OrderInfo,
   ProtectedRoute
 } from '@components';
+import { getCookie } from '../../utils/cookie';
 
 export const App = () => {
   const dispatch: AppDispatch = useDispatch();
 
   useEffect(() => {
     const token = getCookie('accessToken');
-    dispatch(fetchFeed());
-    dispatch(fetchIngredients());
+
     if (token) {
-      dispatch(getUserThunk());
+      dispatch(getUserThunk()).then(() => dispatch(init()));
     } else {
       dispatch(init());
     }
-  }, []);
+  });
 
   return (
-    <Routes>
-      <Route
-        path='*'
-        element={
-          <div className={styles.app}>
-            <AppHeader />
-            <NotFound404 />
-          </div>
-        }
-      />
-      <Route
-        path='/'
-        element={
-          <div className={styles.app}>
-            <AppHeader />
-            <ConstructorPage />
-          </div>
-        }
-      />
-      <Route
-        path='/feed'
-        element={
-          <div className={styles.app}>
-            <AppHeader />
-            <Feed />
-          </div>
-        }
-      />
-      <Route
-        path='/login'
-        element={
-          <ProtectedRoute unAuthOnly={true}>
-            <div className={styles.app}>
-              <AppHeader />
+    <div className={styles.app}>
+      <AppHeader />
+      <Routes>
+        <Route path='*' element={<NotFound404 />} />
+        <Route path='/' element={<ConstructorPage />} />
+        <Route path='/feed' element={<Feed />} />
+        <Route
+          path='/login'
+          element={
+            <ProtectedRoute unAuthOnly>
               <Login />
-            </div>
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path='/register'
-        element={
-          <ProtectedRoute unAuthOnly={true}>
-            <div className={styles.app}>
-              <AppHeader />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path='/register'
+          element={
+            <ProtectedRoute unAuthOnly>
               <Register />
-            </div>
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path='/forgot-password'
-        element={
-          <ProtectedRoute>
-            <div className={styles.app}>
-              <AppHeader />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path='/forgot-password'
+          element={
+            <ProtectedRoute>
               <ForgotPassword />
-            </div>
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path='/reset-password'
-        element={
-          <ProtectedRoute>
-            <div className={styles.app}>
-              <AppHeader />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path='/reset-password'
+          element={
+            <ProtectedRoute>
               <ResetPassword />
-            </div>
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path='/profile'
-        element={
-          <ProtectedRoute>
-            <div className={styles.app}>
-              <AppHeader />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path='/profile'
+          element={
+            <ProtectedRoute>
               <Profile />
-            </div>
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path='/profile/orders'
-        element={
-          <ProtectedRoute>
-            <div className={styles.app}>
-              <AppHeader />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path='/profile/orders'
+          element={
+            <ProtectedRoute>
               <ProfileOrders />
-            </div>
-          </ProtectedRoute>
-        }
-      />
-      <Route // TODO MODAL
-        path='/feed/:number'
-        element={
-          <div className={styles.app}>
-            <AppHeader />
-            <OrderInfo />
-          </div>
-        }
-      />
-      <Route // TODO: modal
-        path='/ingredients/:id'
-        element={
-          <div className={styles.app}>
-            <AppHeader />
-            <IngredientDetails />
-          </div>
-        }
-      />
-      <Route // TODO: modal
-        path='/profile/orders/:number'
-        element={
-          <ProtectedRoute>
-            <div className={styles.app}>
-              <AppHeader />
+            </ProtectedRoute>
+          }
+        />
+        <Route // TODO MODAL
+          path='/feed/:number'
+          element={<OrderInfo />}
+        />
+        <Route // TODO: modal
+          path='/ingredients/:id'
+          element={<IngredientDetails />}
+        />
+        <Route // TODO: modal
+          path='/profile/orders/:number'
+          element={
+            <ProtectedRoute>
               <OrderInfo />
-            </div>
-          </ProtectedRoute>
-        }
-      />
-    </Routes>
+            </ProtectedRoute>
+          }
+        />
+      </Routes>
+    </div>
   );
 };

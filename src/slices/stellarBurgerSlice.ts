@@ -21,13 +21,13 @@ type TInitialState = {
   constructorItems: TConstructorItems;
   orderRequest: boolean;
   errorText: string;
-  isAuthChecked: boolean;
-  isInit: boolean;
   user: TUser;
   orders: TOrder[];
   totalOrders: number;
   ordersToday: number;
   userOrders: TOrder[];
+  isAuthenticated: boolean;
+  isInit: boolean;
 };
 
 const initContructorItems = {
@@ -49,13 +49,13 @@ const initialState: TInitialState = {
   constructorItems: initContructorItems,
   orderRequest: false,
   errorText: '',
-  isAuthChecked: false,
-  isInit: false,
   user: initUser,
   orders: [],
   totalOrders: 0,
   ordersToday: 0,
-  userOrders: []
+  userOrders: [],
+  isAuthenticated: false,
+  isInit: false
 };
 
 const stellarBurgerSlice = createSlice({
@@ -74,14 +74,14 @@ const stellarBurgerSlice = createSlice({
       state.orderModalData = null;
       state.constructorItems = initContructorItems;
     },
-    init(state) {
-      state.isInit = true;
-    },
     removeOrders(state) {
       state.orders.length = 0;
     },
     removeUserOrders(state) {
       state.userOrders.length = 0;
+    },
+    init(state) {
+      state.isInit = true;
     }
   },
   selectors: {
@@ -91,12 +91,13 @@ const stellarBurgerSlice = createSlice({
     selectConstructorItems: (state) => state.constructorItems,
     selectOrderRequest: (state) => state.orderRequest,
     selectErrorText: (state) => state.errorText,
-    selectIsAuthChecked: (state) => state.isAuthChecked,
     selectUser: (state) => state.user,
     selectOrders: (state) => state.orders,
     selectTotalOrders: (state) => state.totalOrders,
     selectTodayOrders: (state) => state.ordersToday,
-    selectUserOrders: (state) => state.userOrders
+    selectUserOrders: (state) => state.userOrders,
+    selectIsAuthenticated: (state) => state.isAuthenticated,
+    selectIsInit: (state) => state.isInit
   },
   extraReducers: (builder) => {
     builder
@@ -124,8 +125,8 @@ const stellarBurgerSlice = createSlice({
         state.loading = false;
       })
       .addCase(fetchLoginUser.fulfilled, (state, action) => {
-        state.isAuthChecked = true;
         state.loading = false;
+        state.isAuthenticated = true;
         setCookie('accessToken', action.payload.accessToken);
         localStorage.setItem('refreshToken', action.payload.refreshToken);
       })
@@ -146,14 +147,12 @@ const stellarBurgerSlice = createSlice({
       })
       .addCase(getUserThunk.rejected, (state, action) => {
         state.loading = false;
-        state.isInit = true;
       })
       .addCase(getUserThunk.fulfilled, (state, action) => {
         state.loading = false;
-        state.isInit = true;
         state.user.name = action.payload.user.name;
         state.user.email = action.payload.user.email;
-        state.isAuthChecked = true;
+        state.isAuthenticated = true;
       })
       .addCase(fetchFeed.pending, (state) => {
         state.loading = true;
@@ -189,6 +188,7 @@ const stellarBurgerSlice = createSlice({
           localStorage.removeItem('refreshToken');
           deleteCookie('accessToken');
           state.user = initUser;
+          state.isAuthenticated = false;
         }
       });
   }
@@ -237,18 +237,19 @@ export const {
   selectConstructorItems,
   selectOrderRequest,
   selectErrorText,
-  selectIsAuthChecked,
   selectUser,
   selectOrders,
   selectTotalOrders,
   selectTodayOrders,
-  selectUserOrders
+  selectUserOrders,
+  selectIsAuthenticated,
+  selectIsInit
 } = stellarBurgerSlice.selectors;
 export const {
   addIngredient,
-  init,
   closeOrderRequest,
   removeOrders,
-  removeUserOrders
+  removeUserOrders,
+  init
 } = stellarBurgerSlice.actions;
 export default stellarBurgerSlice.reducer;

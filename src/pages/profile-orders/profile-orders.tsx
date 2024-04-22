@@ -4,6 +4,7 @@ import { FC, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch } from '../../services/store';
 import {
+  fetchIngredients,
   fetchUserOrders,
   removeUserOrders,
   selectUserOrders
@@ -14,7 +15,7 @@ export const ProfileOrders: FC = () => {
   const dispatch: AppDispatch = useDispatch();
   useEffect(() => {
     dispatch(removeUserOrders());
-    dispatch(fetchUserOrders());
+    Promise.all([dispatch(fetchIngredients()), dispatch(fetchUserOrders())]);
   }, []);
   const orders: TOrder[] = useSelector(selectUserOrders);
 
