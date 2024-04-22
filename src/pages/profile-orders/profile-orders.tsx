@@ -1,5 +1,4 @@
 import { ProfileOrdersUI } from '@ui-pages';
-import { TOrder } from '@utils-types';
 import { FC, useEffect } from 'react';
 import {
   fetchIngredients,
@@ -16,9 +15,9 @@ export const ProfileOrders: FC = () => {
     dispatch(removeUserOrders());
     Promise.all([dispatch(fetchIngredients()), dispatch(fetchUserOrders())]);
   }, []);
-  const orders: TOrder[] = useAppSelector(selectUserOrders);
+  const orders = useAppSelector(selectUserOrders);
 
-  if (!orders.length) {
+  if (!orders) {
     return <Preloader />;
   }
 

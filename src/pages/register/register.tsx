@@ -1,32 +1,39 @@
-import { FC, SyntheticEvent, useState } from 'react';
+import { FC, SyntheticEvent, useEffect } from 'react';
 import { RegisterUI } from '@ui-pages';
 import {
   fetchRegisterUser,
+  getUserThunk,
+  removeErrorText,
   selectErrorText,
   selectLoading
 } from '../../slices/stellarBurgerSlice';
-import { useNavigate } from 'react-router-dom';
 import { Preloader } from '@ui';
 import { useAppSelector, useAppDispatch } from '../../services/store';
+import { useForm } from '../../hooks/useForm';
 
 export const Register: FC = () => {
   const dispatch = useAppDispatch();
-  const errorText = useAppSelector(selectErrorText);
-  const navigate = useNavigate();
-  const [userName, setUserName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const { values, handleChange } = useForm({
+    userName: '',
+    email: '',
+    password: ''
+  });
   const isLoading = useAppSelector(selectLoading);
+  const error = useAppSelector(selectErrorText);
+
+  useEffect(() => {
+    dispatch(removeErrorText());
+  }, []);
 
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
-    dispatch(fetchRegisterUser({ email, password, name: userName })).then(
-      (response: any) => {
-        if (response.payload.success) {
-          return navigate('/login');
-        }
-      }
-    );
+    dispatch(
+      fetchRegisterUser({
+        name: values.userName,
+        password: values.password,
+        email: values.email
+      })
+    ).then(() => dispatch(getUserThunk()));
   };
 
   if (isLoading) {
@@ -35,13 +42,13 @@ export const Register: FC = () => {
 
   return (
     <RegisterUI
-      errorText=''
-      email={email}
-      userName={userName}
-      password={password}
-      setEmail={setEmail}
-      setPassword={setPassword}
-      setUserName={setUserName}
+      errorText={error}
+      email={values.email}
+      userName={values.userName}
+      password={values.password}
+      setEmail={handleChange}
+      setPassword={handleChange}
+      setUserName={handleChange}
       handleSubmit={handleSubmit}
     />
   );
