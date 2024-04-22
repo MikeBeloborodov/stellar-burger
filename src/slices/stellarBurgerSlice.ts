@@ -91,6 +91,15 @@ const stellarBurgerSlice = createSlice({
     },
     closeModal(state) {
       state.isModalOpened = false;
+    },
+    deleteIngredient(state, action: PayloadAction<TIngredient>) {
+      const ingredientIndex = state.constructorItems.ingredients.findIndex(
+        (item) => item._id === action.payload._id
+      );
+      state.constructorItems.ingredients =
+        state.constructorItems.ingredients.filter(
+          (_, index) => index !== ingredientIndex
+        );
     }
   },
   selectors: {
@@ -121,7 +130,7 @@ const stellarBurgerSlice = createSlice({
       .addCase(fetchNewOrder.pending, (state) => {
         state.orderRequest = true;
       })
-      .addCase(fetchNewOrder.rejected, (state, action) => {
+      .addCase(fetchNewOrder.rejected, (state) => {
         state.orderRequest = false;
       })
       .addCase(fetchNewOrder.fulfilled, (state, action) => {
@@ -131,7 +140,7 @@ const stellarBurgerSlice = createSlice({
       .addCase(fetchLoginUser.pending, (state) => {
         state.loading = true;
       })
-      .addCase(fetchLoginUser.rejected, (state, action) => {
+      .addCase(fetchLoginUser.rejected, (state) => {
         state.loading = false;
       })
       .addCase(fetchLoginUser.fulfilled, (state, action) => {
@@ -149,13 +158,13 @@ const stellarBurgerSlice = createSlice({
           state.errorText = action.error.message;
         }
       })
-      .addCase(fetchRegisterUser.fulfilled, (state, action) => {
+      .addCase(fetchRegisterUser.fulfilled, (state) => {
         state.loading = false;
       })
       .addCase(getUserThunk.pending, (state) => {
         state.loading = true;
       })
-      .addCase(getUserThunk.rejected, (state, action) => {
+      .addCase(getUserThunk.rejected, (state) => {
         state.loading = false;
       })
       .addCase(getUserThunk.fulfilled, (state, action) => {
@@ -167,7 +176,7 @@ const stellarBurgerSlice = createSlice({
       .addCase(fetchFeed.pending, (state) => {
         state.loading = true;
       })
-      .addCase(fetchFeed.rejected, (state, action) => {
+      .addCase(fetchFeed.rejected, (state) => {
         state.loading = false;
       })
       .addCase(fetchFeed.fulfilled, (state, action) => {
@@ -281,6 +290,7 @@ export const {
   removeUserOrders,
   init,
   openModal,
-  closeModal
+  closeModal,
+  deleteIngredient
 } = stellarBurgerSlice.actions;
 export default stellarBurgerSlice.reducer;
