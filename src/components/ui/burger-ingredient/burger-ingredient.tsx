@@ -9,14 +9,13 @@ import {
 } from '@zlden/react-developer-burger-ui-components';
 
 import { TBurgerIngredientUIProps } from './type';
-import { AppDispatch } from 'src/services/store';
-import { useDispatch } from 'react-redux';
 import { openModal } from '../../../slices/stellarBurgerSlice';
+import { useAppDispatch } from '../../../services/store';
 
 export const BurgerIngredientUI: FC<TBurgerIngredientUIProps> = memo(
   ({ ingredient, count, handleAdd, locationState }) => {
     const { image, price, name, _id } = ingredient;
-    const dispatch: AppDispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
     const onClick = () => {
       dispatch(openModal());

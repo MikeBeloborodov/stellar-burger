@@ -1,10 +1,10 @@
-import { useSelector } from 'react-redux';
 import { Navigate, useLocation } from 'react-router-dom';
 import {
   selectIsAuthenticated,
   selectIsInit
 } from '../../slices/stellarBurgerSlice';
 import { Preloader } from '../ui/preloader';
+import { useAppSelector } from '../../services/store';
 
 type ProtectedRouteProps = {
   children: React.ReactElement;
@@ -15,8 +15,8 @@ export const ProtectedRoute = ({
   children,
   unAuthOnly
 }: ProtectedRouteProps) => {
-  const isAuthenticated = useSelector(selectIsAuthenticated);
-  const isInit = useSelector(selectIsInit);
+  const isAuthenticated = useAppSelector(selectIsAuthenticated);
+  const isInit = useAppSelector(selectIsInit);
   const location = useLocation();
 
   if (!isInit) {

@@ -9,13 +9,12 @@ import styles from './order-card.module.css';
 
 import { OrderCardUIProps } from './type';
 import { OrderStatus } from '@components';
-import { AppDispatch } from 'src/services/store';
-import { useDispatch } from 'react-redux';
 import { openModal } from '../../../slices/stellarBurgerSlice';
+import { useAppDispatch } from '../../../services/store';
 
 export const OrderCardUI: FC<OrderCardUIProps> = memo(
   ({ orderInfo, maxIngredients, locationState }) => {
-    const dispatch: AppDispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
     const onClick = () => {
       dispatch(openModal());

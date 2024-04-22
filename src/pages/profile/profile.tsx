@@ -1,18 +1,17 @@
 import { ProfileUI } from '@ui-pages';
 import { FC, SyntheticEvent, useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import {
   fetchUpdateUser,
   selectLoading,
   selectUser
 } from '../../slices/stellarBurgerSlice';
 import { Preloader } from '@ui';
-import { AppDispatch } from '../../services/store';
+import { useAppSelector, useAppDispatch } from '../../services/store';
 
 export const Profile: FC = () => {
-  const user = useSelector(selectUser);
-  const isLoading = useSelector(selectLoading);
-  const dispatch: AppDispatch = useDispatch();
+  const dispatch = useAppDispatch();
+  const user = useAppSelector(selectUser);
+  const isLoading = useAppSelector(selectLoading);
 
   const [formValue, setFormValue] = useState({
     name: user.name,
