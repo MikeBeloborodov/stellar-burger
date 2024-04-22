@@ -23,7 +23,7 @@ export const BurgerConstructor: FC = () => {
 
   const onOrderClick = () => {
     if (!isAuthenticated) {
-      return navigate('/login');
+      navigate('/login', { replace: true });
     }
 
     if (constructorItems.bun._id && constructorItems.ingredients.length) {

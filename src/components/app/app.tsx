@@ -15,12 +15,7 @@ import { Routes, Route } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../services/store';
-import {
-  fetchFeed,
-  fetchIngredients,
-  getUserThunk,
-  init
-} from '../../slices/stellarBurgerSlice';
+import { getUserThunk, init } from '../../slices/stellarBurgerSlice';
 
 import {
   AppHeader,
@@ -69,7 +64,7 @@ export const App = () => {
         <Route
           path='/forgot-password'
           element={
-            <ProtectedRoute>
+            <ProtectedRoute unAuthOnly>
               <ForgotPassword />
             </ProtectedRoute>
           }
@@ -77,7 +72,7 @@ export const App = () => {
         <Route
           path='/reset-password'
           element={
-            <ProtectedRoute>
+            <ProtectedRoute unAuthOnly>
               <ResetPassword />
             </ProtectedRoute>
           }

@@ -8,7 +8,8 @@ import {
   loginUserApi,
   logoutApi,
   orderBurgerApi,
-  registerUserApi
+  registerUserApi,
+  updateUserApi
 } from '@api';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { TConstructorItems, TIngredient, TOrder, TUser } from '@utils-types';
@@ -190,6 +191,19 @@ const stellarBurgerSlice = createSlice({
           state.user = initUser;
           state.isAuthenticated = false;
         }
+      })
+      .addCase(fetchUpdateUser.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(fetchUpdateUser.rejected, (state) => {
+        state.loading = false;
+      })
+      .addCase(fetchUpdateUser.fulfilled, (state, action) => {
+        state.loading = false;
+        if (action.payload.success) {
+          state.user.name = action.payload.user.name;
+          state.user.email = action.payload.user.email;
+        }
       });
   }
 });
@@ -228,6 +242,11 @@ export const fetchUserOrders = createAsyncThunk('user/orders', async () =>
 
 export const fetchLogout = createAsyncThunk('user/logout', async () =>
   logoutApi()
+);
+
+export const fetchUpdateUser = createAsyncThunk(
+  'user/update',
+  async (user: Partial<TRegisterData>) => updateUserApi(user)
 );
 
 export const {
