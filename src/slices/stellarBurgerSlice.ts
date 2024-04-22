@@ -29,6 +29,7 @@ type TInitialState = {
   userOrders: TOrder[];
   isAuthenticated: boolean;
   isInit: boolean;
+  isModalOpened: boolean;
 };
 
 const initContructorItems = {
@@ -56,7 +57,8 @@ const initialState: TInitialState = {
   ordersToday: 0,
   userOrders: [],
   isAuthenticated: false,
-  isInit: false
+  isInit: false,
+  isModalOpened: false
 };
 
 const stellarBurgerSlice = createSlice({
@@ -83,6 +85,12 @@ const stellarBurgerSlice = createSlice({
     },
     init(state) {
       state.isInit = true;
+    },
+    openModal(state) {
+      state.isModalOpened = true;
+    },
+    closeModal(state) {
+      state.isModalOpened = false;
     }
   },
   selectors: {
@@ -98,7 +106,8 @@ const stellarBurgerSlice = createSlice({
     selectTodayOrders: (state) => state.ordersToday,
     selectUserOrders: (state) => state.userOrders,
     selectIsAuthenticated: (state) => state.isAuthenticated,
-    selectIsInit: (state) => state.isInit
+    selectIsInit: (state) => state.isInit,
+    selectIsModalOpened: (state) => state.isModalOpened
   },
   extraReducers: (builder) => {
     builder
@@ -262,13 +271,16 @@ export const {
   selectTodayOrders,
   selectUserOrders,
   selectIsAuthenticated,
-  selectIsInit
+  selectIsInit,
+  selectIsModalOpened
 } = stellarBurgerSlice.selectors;
 export const {
   addIngredient,
   closeOrderRequest,
   removeOrders,
   removeUserOrders,
-  init
+  init,
+  openModal,
+  closeModal
 } = stellarBurgerSlice.actions;
 export default stellarBurgerSlice.reducer;
