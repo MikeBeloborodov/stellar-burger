@@ -1,19 +1,69 @@
-# Проектная работа 11-го спринта
+https://github.com/MikeBeloborodov/stellar-burger
 
-[Макет](<https://www.figma.com/file/vIywAvqfkOIRWGOkfOnReY/React-Fullstack_-Проектные-задачи-(3-месяца)_external_link?type=design&node-id=0-1&mode=design>)
+# Проектная работа "Stellar Burger"
 
-[Чеклист](https://www.notion.so/praktikum/0527c10b723d4873aa75686bad54b32e?pvs=4)
+## Оглавление
 
-## Этапы работы:
+- [Запуск](#запуск)
+- [Сборка](#сборка)
+- [Описание](#описание)
+- [Скриншоты](#скриншоты)
+- [Автор](#автор)
+- [Благодарность](#благодарность)
 
-1. Разверните проект и ознакомьтесь с кодом. Все необходимые вам компоненты уже созданы и лежат в папке `src/components`
+## Запуск
 
-2. Настройте роутинг.
+Для установки и запуска проекта необходимо выполнить команды
 
-3. Напишите функционал запросов данных с сервера, используя `Redux` и глобальный `store`. Сами "ручки" уже прописаны и лежат в `utils/burger-api.ts`
+```
+npm install
+npm run start
+```
 
-4. Настройте авторизацию и создайте защищённые роуты.
+или
 
-## Важно:
+```
+yarn
+yarn start
+```
 
-Для корректной работы запросов к серверу необходимо добавить переменную BURGER_API_URL в окружение. Сама ссылка находится в файле `.env.example`.
+## Сборка
+
+```
+npm run build
+```
+
+или
+
+```
+yarn build
+```
+
+## Описание
+
+Сервис по заказу космических бургеров.
+
+Стек: React, SCSS, TS, Webpack, Redux Toolkit
+
+Структура проекта:
+
+- src/ — исходные файлы проекта
+- src/components/ — папка с React компонентами
+- src/slices - папка со слайсами
+- src/services/store - папка со стором
+- src/hooks - папка с хуками
+
+## Скриншоты
+
+![](screenshot_1.jpg)
+![](screenshot_2.jpg)
+![](screenshot_3.jpg)
+
+## Автор
+
+- Github - [MikeBeloborodov](https://github.com/MikeBeloborodov)
+- Frontend Mentor - [@MikeBeloborodov](https://www.frontendmentor.io/profile/MikeBeloborodov)
+
+## Благодарность
+
+Благодарю команду Яндекс Практикум за предоставление дизайна и уроков!
