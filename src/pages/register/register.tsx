@@ -10,6 +10,7 @@ import {
 import { Preloader } from '@ui';
 import { useAppSelector, useAppDispatch } from '../../services/store';
 import { useForm } from '../../hooks/useForm';
+import { setCookie } from '../../utils/cookie';
 
 export const Register: FC = () => {
   const dispatch = useAppDispatch();
@@ -33,7 +34,13 @@ export const Register: FC = () => {
         password: values.password,
         email: values.email
       })
-    ).then(() => dispatch(getUserThunk()));
+    )
+      .unwrap()
+      .then((payload) => {
+        localStorage.setItem('refreshToken', payload.refreshToken);
+        setCookie('accessToken', payload.accessToken);
+        dispatch(getUserThunk());
+      });
   };
 
   if (isLoading) {
