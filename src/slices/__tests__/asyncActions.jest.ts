@@ -7,6 +7,7 @@ import stellarBurgerSlice, {
   fetchLogout,
   fetchNewOrder,
   fetchRegisterUser,
+  fetchUpdateUser,
   fetchUserOrders,
   getUserThunk,
   initialState
@@ -349,5 +350,37 @@ describe('Test async actions', () => {
     expect(state.loading).toBe(false);
     expect(state.user).toEqual({ name: '', email: '' });
     expect(state.isAuthenticated).toBe(false);
+  });
+
+  test('Test fetchUpdateUser pending', () => {
+    const state = stellarBurgerSlice(
+      initialState,
+      fetchUpdateUser.pending('', { name: 'test' })
+    );
+    expect(state.loading).toBe(true);
+  });
+
+  test('Test fetchUpdateUser rejected', () => {
+    const mockError = { name: 'test', message: 'error' };
+    const state = stellarBurgerSlice(
+      initialState,
+      fetchUpdateUser.rejected(mockError, '', { name: 'test' })
+    );
+    expect(state.loading).toBe(false);
+  });
+
+  test('Test fetchUpdateUser fulfilled', () => {
+    const mockUser = { name: 'testuser', email: 'changedEmail@mail.ru' };
+    const mockResponse = {
+      success: true,
+      user: mockUser
+    };
+    const state = stellarBurgerSlice(
+      initialState,
+      fetchUpdateUser.fulfilled(mockResponse, '', mockUser)
+    );
+
+    expect(state.loading).toBe(false);
+    expect(state.user).toEqual(mockUser);
   });
 });
