@@ -13,7 +13,7 @@ import { openModal } from '../../../slices/stellarBurgerSlice';
 import { useAppDispatch } from '../../../services/store';
 
 export const BurgerIngredientUI: FC<TBurgerIngredientUIProps> = memo(
-  ({ ingredient, count, handleAdd, locationState }) => {
+  ({ ingredient, count, handleAdd, locationState, index }) => {
     const { image, price, name, _id } = ingredient;
     const dispatch = useAppDispatch();
 
@@ -22,7 +22,12 @@ export const BurgerIngredientUI: FC<TBurgerIngredientUIProps> = memo(
     };
 
     return (
-      <li className={styles.container}>
+      <li
+        className={styles.container}
+        data-cy={
+          ingredient.type === 'bun' ? `bun_${index}` : `ingredient_${index}`
+        }
+      >
         <Link
           className={styles.article}
           to={`/ingredients/${_id}`}
