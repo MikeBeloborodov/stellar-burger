@@ -27,17 +27,6 @@ let store = configureStore({
   }
 });
 
-afterAll(() => {
-  store = configureStore({
-    reducer: {
-      stellarBurger: stellarBurgerSlice
-    },
-    preloadedState: {
-      stellarBurger: mockStore
-    }
-  });
-});
-
 describe('Test selectors', () => {
   test('Test selectUser', () => {
     const user = selectUser(store.getState());
@@ -89,35 +78,7 @@ describe('Test selectors', () => {
 
   test('Test selectIngredients', () => {
     const ingredients = selectIngredients(store.getState());
-    expect(ingredients).toEqual([
-      {
-        _id: '643d69a5c3f7b9001cfa093c',
-        name: 'Краторная булка N-200i',
-        type: 'bun',
-        proteins: 80,
-        fat: 24,
-        carbohydrates: 53,
-        calories: 420,
-        price: 1255,
-        image: 'https://code.s3.yandex.net/react/code/bun-02.png',
-        image_mobile: 'https://code.s3.yandex.net/react/code/bun-02-mobile.png',
-        image_large: 'https://code.s3.yandex.net/react/code/bun-02-large.png'
-      },
-      {
-        _id: '643d69a5c3f7b9001cfa0941',
-        name: 'Биокотлета из марсианской Магнолии',
-        type: 'main',
-        proteins: 420,
-        fat: 142,
-        carbohydrates: 242,
-        calories: 4242,
-        price: 424,
-        image: 'https://code.s3.yandex.net/react/code/meat-01.png',
-        image_mobile:
-          'https://code.s3.yandex.net/react/code/meat-01-mobile.png',
-        image_large: 'https://code.s3.yandex.net/react/code/meat-01-large.png'
-      }
-    ]);
+    expect(ingredients).toEqual(mockStore.ingredients);
   });
 
   test('Test selectConstructorItems', () => {
@@ -127,79 +88,16 @@ describe('Test selectors', () => {
 
   test('Test selectOrderModalData', () => {
     const orderModalData = selectOrderModalData(store.getState());
-    expect(orderModalData).toEqual({
-      ingredients: ['testid1', 'testid2'],
-      _id: '664e973297ede0001d06bdbe',
-      status: 'done',
-      name: 'Флюоресцентный люминесцентный бургер',
-      createdAt: '2024-05-23T01:09:06.622Z',
-      updatedAt: '2024-05-23T01:09:06.967Z',
-      number: 40682
-    });
+    expect(orderModalData).toEqual(mockStore.orderModalData);
   });
 
   test('Test selectOrders', () => {
     const orders = selectOrders(store.getState());
-    expect(orders).toEqual([
-      {
-        _id: '664e927097ede0001d06bdb9',
-        ingredients: [
-          '643d69a5c3f7b9001cfa093d',
-          '643d69a5c3f7b9001cfa093e',
-          '643d69a5c3f7b9001cfa093d'
-        ],
-        status: 'done',
-        name: 'Флюоресцентный люминесцентный бургер',
-        createdAt: '2024-05-23T00:48:48.039Z',
-        updatedAt: '2024-05-23T00:48:48.410Z',
-        number: 40680
-      },
-      {
-        _id: '664e85e497ede0001d06bda7',
-        ingredients: [
-          '643d69a5c3f7b9001cfa093d',
-          '643d69a5c3f7b9001cfa093d',
-          '643d69a5c3f7b9001cfa093e'
-        ],
-        status: 'done',
-        name: 'Флюоресцентный люминесцентный бургер',
-        createdAt: '2024-05-22T23:55:16.472Z',
-        updatedAt: '2024-05-22T23:55:16.866Z',
-        number: 40679
-      }
-    ]);
+    expect(orders).toEqual(mockStore.orders);
   });
 
   test('Test selectUserOrders', () => {
     const userOrders = selectUserOrders(store.getState());
-    expect(userOrders).toEqual([
-      {
-        _id: '6627770797ede0001d067400',
-        ingredients: [
-          '643d69a5c3f7b9001cfa093d',
-          '643d69a5c3f7b9001cfa093e',
-          '643d69a5c3f7b9001cfa093e',
-          '643d69a5c3f7b9001cfa093d'
-        ],
-        status: 'done',
-        name: 'Флюоресцентный люминесцентный бургер',
-        createdAt: '2024-04-23T08:53:27.817Z',
-        updatedAt: '2024-04-23T08:53:28.481Z',
-        number: 38671
-      },
-      {
-        _id: '664e927097ede0001d06bdb9',
-        ingredients: [
-          '643d69a5c3f7b9001cfa093d',
-          '643d69a5c3f7b9001cfa093e',
-          '643d69a5c3f7b9001cfa093d'
-        ],
-        status: 'done',
-        name: 'Флюоресцентный люминесцентный бургер',
-        createdAt: '2024-05-23T00:48:48.039Z',
-        updatedAt: '2024-05-23T00:48:48.410Z',
-        number: 40680
-      }
-    ]);
+    expect(userOrders).toEqual(mockStore.userOrders);
   });
 });

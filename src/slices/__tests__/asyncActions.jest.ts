@@ -1,5 +1,4 @@
 import { expect, test, describe, jest } from '@jest/globals';
-import { configureStore } from '@reduxjs/toolkit';
 import stellarBurgerSlice, {
   fetchFeed,
   fetchIngredients,
@@ -12,16 +11,6 @@ import stellarBurgerSlice, {
   getUserThunk,
   initialState
 } from '../stellarBurgerSlice';
-import { mockStore } from '../mockData';
-
-let store = configureStore({
-  reducer: {
-    stellarBurger: stellarBurgerSlice
-  },
-  preloadedState: {
-    stellarBurger: mockStore
-  }
-});
 
 describe('Test async actions', () => {
   test('Test getUserThunk pending', () => {

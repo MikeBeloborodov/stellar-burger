@@ -22,7 +22,7 @@ import stellarBurgerSlice, {
   selectUserOrders,
   setErrorText
 } from '../stellarBurgerSlice';
-import { mockStore } from '../mockData';
+import { mockStore, mockIngredient, mockBun } from '../mockData';
 
 function initStore() {
   return configureStore({
@@ -39,23 +39,7 @@ describe('Test actions', () => {
   test('Test deleteIngredient', () => {
     const store = initStore();
     const before = selectConstructorItems(store.getState()).ingredients.length;
-    store.dispatch(
-      deleteIngredient({
-        _id: '643d69a5c3f7b9001cfa0941',
-        name: 'Биокотлета из марсианской Магнолии',
-        type: 'main',
-        proteins: 420,
-        fat: 142,
-        carbohydrates: 242,
-        calories: 4242,
-        price: 424,
-        image: 'https://code.s3.yandex.net/react/code/meat-01.png',
-        image_mobile:
-          'https://code.s3.yandex.net/react/code/meat-01-mobile.png',
-        image_large: 'https://code.s3.yandex.net/react/code/meat-01-large.png',
-        uniqueId: 'test_id_1'
-      })
-    );
+    store.dispatch(deleteIngredient(mockIngredient));
     const after = selectConstructorItems(store.getState()).ingredients.length;
     expect(before).toBe(3);
     expect(after).toBe(2);
@@ -63,37 +47,8 @@ describe('Test actions', () => {
 
   test('Test addIngredient', () => {
     const store = initStore();
-    store.dispatch(
-      addIngredient({
-        _id: '643d69a5c3f7b9001cfa0941',
-        name: 'Биокотлета из марсианской Магнолии',
-        type: 'main',
-        proteins: 420,
-        fat: 142,
-        carbohydrates: 242,
-        calories: 4242,
-        price: 424,
-        image: 'https://code.s3.yandex.net/react/code/meat-01.png',
-        image_mobile:
-          'https://code.s3.yandex.net/react/code/meat-01-mobile.png',
-        image_large: 'https://code.s3.yandex.net/react/code/meat-01-large.png'
-      })
-    );
-    store.dispatch(
-      addIngredient({
-        _id: '643d69a5c3f7b9001cfa093c',
-        name: 'Краторная булка N-200i',
-        type: 'bun',
-        proteins: 80,
-        fat: 24,
-        carbohydrates: 53,
-        calories: 420,
-        price: 1255,
-        image: 'https://code.s3.yandex.net/react/code/bun-02.png',
-        image_mobile: 'https://code.s3.yandex.net/react/code/bun-02-mobile.png',
-        image_large: 'https://code.s3.yandex.net/react/code/bun-02-large.png'
-      })
-    );
+    store.dispatch(addIngredient(mockIngredient));
+    store.dispatch(addIngredient(mockBun));
 
     const constructor = selectConstructorItems(store.getState());
     expect(constructor.ingredients.length).toEqual(4);
