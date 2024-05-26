@@ -31,7 +31,7 @@ import {
   selectIsModalOpened,
   selectOrders
 } from '../../slices/stellarBurgerSlice';
-import { getCookie } from '../../utils/cookie';
+import { deleteCookie, getCookie } from '../../utils/cookie';
 import { useAppDispatch, useAppSelector } from '../../services/store';
 
 export const App = () => {
@@ -46,7 +46,15 @@ export const App = () => {
 
   useEffect(() => {
     if (!isAuthenticated && token) {
-      dispatch(getUserThunk()).then(() => dispatch(init()));
+      dispatch(getUserThunk())
+        .unwrap()
+        .then(() => {
+          dispatch(init());
+        })
+        .catch((e) => {
+          deleteCookie('accessToken');
+          localStorage.removeItem('refreshToken');
+        });
     } else {
       dispatch(init());
     }
